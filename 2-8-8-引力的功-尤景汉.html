@@ -1,0 +1,802 @@
+﻿<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2-8-8-引力的功-尤景汉</title>
+    <link rel="icon" href="data:," />
+    <style>
+      /* 内联关键样式，确保外部 CSS 加载前 Loading 动画也能立即显示 */
+      #loadingIndicator {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #ffffff; /* 明确背景色，避免闪烁 */
+        z-index: 10000;
+        transition: opacity 0.4s ease, visibility 0.4s;
+      }
+      .wave-bars {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 50px;
+      }
+      .wave-bars i {
+        width: 5px;
+        height: 18px;
+        background: linear-gradient(to bottom, #2253bd, #60a5fa);
+        border-radius: 10px;
+        animation: wave-logic 1s ease-in-out infinite;
+      }
+      .wave-bars i:nth-child(1) {
+        animation-delay: 0.1s;
+      }
+      .wave-bars i:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .wave-bars i:nth-child(3) {
+        animation-delay: 0.3s;
+      }
+      .wave-bars i:nth-child(4) {
+        animation-delay: 0.4s;
+      }
+      .wave-bars i:nth-child(5) {
+        animation-delay: 0.5s;
+      }
+      @keyframes wave-logic {
+        0%,
+        100% {
+          height: 15px;
+          transform: scaleY(1);
+          opacity: 0.4;
+        }
+        50% {
+          height: 35px;
+          transform: scaleY(1.2);
+          opacity: 1;
+        }
+      }
+    </style>
+    <script id="geogebra-script" defer src="http://www.xhdds.cn/api/geobox/GeoGebra5.2/deployggb.js"></script>
+    <script type="module" crossorigin src="http://www.xhdds.cn/api/geobox/3.10/js/index.js"></script>
+    <link rel="stylesheet" crossorigin href="http://www.xhdds.cn/api/geobox/3.10/css/index.css" />
+  </head>
+  <body class="loading">
+    <div id="ggbTitleBar">
+      <div id="ggbTitle"></div>
+      <div id="systemTime"></div>
+      <div class="titleBarHelp">
+        <svg
+          t="1751798222598"
+          id="help"
+          class="icon"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="6105"
+          width="1.5vw"
+          height="1.5vw"
+        >
+          <path
+            d="M668.3 441.6c-7.7 14.3-16.9 26.6-27.5 37-10.6 10.4-29.6 27.8-57.1 52.3-7.6 6.9-13.7 13-18.2 18.2-4.6 5.2-8 10-10.2 14.4-2.2 4.3-4 8.7-5.2 13-1.2 4.3-3.1 12-5.5 22.9-4.2 23.2-17.5 34.8-39.8 34.8-11.6 0-21.4-3.8-29.3-11.4-7.9-7.6-11.9-18.8-11.9-33.8 0-18.7 2.9-34.9 8.7-48.7 5.8-13.7 13.5-25.7 23.1-36.1 9.6-10.4 22.5-22.7 38.8-36.9 14.3-12.5 24.6-21.9 31-28.3 6.4-6.4 11.7-13.4 16.1-21.2 4.3-7.8 6.5-16.2 6.5-25.4 0-17.8-6.6-32.9-19.9-45.1-13.3-12.2-30.4-18.4-51.4-18.4-24.6 0-42.6 6.2-54.2 18.6-11.6 12.4-21.4 30.6-29.5 54.7-7.6 25.2-22 37.8-43.2 37.8-12.5 0-23-4.4-31.6-13.2-8.6-8.8-12.9-18.3-12.9-28.6 0-21.2 6.8-42.6 20.4-64.4 13.6-21.7 33.5-39.7 59.6-54 26.1-14.3 56.6-21.4 91.4-21.4 32.4 0 60.9 6 85.7 17.9 24.8 11.9 43.9 28.1 57.4 48.7 13.5 20.5 20.3 42.8 20.3 66.9 0 18.8-3.8 35.4-11.6 49.7z m-125 309.7c-10.1 8.9-21.7 13.4-34.8 13.4-13.6 0-25.5-4.4-35.7-13.2-10.2-8.8-15.2-21.1-15.2-36.9 0-14 4.9-25.9 14.7-35.5 9.8-9.6 21.9-14.4 36.2-14.4 14.1 0 25.9 4.8 35.5 14.4 9.6 9.6 14.4 21.4 14.4 35.5 0 15.5-5.1 27.8-15.1 36.7zM512.5 12.1c-276.1 0-500 223.6-500 499.4 0 275.8 223.9 499.4 500 499.4s500-223.6 500-499.4c0-275.8-223.9-499.4-500-499.4z"
+            fill="#595757"
+            p-id="6106"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <div id="app123" class="app">
+      <div id="ggbContainer"></div>
+    </div>
+    <div id="loadingIndicator">
+      <div class="wave-bars"><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <!-- 工具栏 -->
+    <div id="toolbar" class="horizontal">
+      <button id="toggleToolbarBtn">☰</button>
+      <!-- 折叠/展开按钮 -->
+      <div id="dragArea">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M19 10C19 12.2091 17.2091 14 15 14C12.7909 14 11 12.2091 11 10C11 7.79086 12.7909 6 15 6C17.2091 6 19 7.79086 19 10ZM15 28C17.2091 28 19 26.2091 19 24C19 21.7909 17.2091 20 15 20C12.7909 20 11 21.7909 11 24C11 26.2091 12.7909 28 15 28ZM15 42C17.2091 42 19 40.2091 19 38C19 35.7909 17.2091 34 15 34C12.7909 34 11 35.7909 11 38C11 40.2091 12.7909 42 15 42Z"
+            fill="#bdb6b6"
+          />
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M37 10C37 12.2091 35.2091 14 33 14C30.7909 14 29 12.2091 29 10C29 7.79086 30.7909 6 33 6C35.2091 6 37 7.79086 37 10ZM33 28C35.2091 28 37 26.2091 37 24C37 21.7909 35.2091 20 33 20C30.7909 20 29 21.7909 29 24C29 26.2091 30.7909 28 33 28ZM33 42C35.2091 42 37 40.2091 37 38C37 35.7909 35.2091 34 33 34C30.7909 34 29 35.7909 29 38C29 40.2091 30.7909 42 33 42Z"
+            fill="#bdb6b6"
+          />
+        </svg>
+      </div>
+      <div id="pages">
+        <span></span>
+        <!-- 添加弹出菜单 -->
+        <div class="popup-menu">
+          <ul>
+            <!-- 菜单项将由 JavaScript 动态生成 -->
+          </ul>
+        </div>
+      </div>
+      <button id="firstPageBtn">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+          <path
+            d="M34 36L22 24L34 12"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M14 12V36"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button id="prevPageBtn">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+          <path
+            d="M24 36L12 24L24 12"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M36 36L24 24L36 12"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button id="nextPageBtn">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+          <path
+            d="M12 12L24 24L12 36"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M24 12L36 24L24 36"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button id="lastPageBtn">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+          <path
+            d="M14 12L26 24L14 36"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M34 12V36"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button id="saveBtn">
+        <!-- 图标将由 JavaScript 动态设置 -->
+      </button>
+      <button id="drawBtn">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+          <g clip-path="url(#icon-a6256952696ccc)">
+            <path
+              d="M30.9995 8.99902L38.9995 16.999"
+              stroke="#000000"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M7.99953 31.999L35.9994 4L43.9995 11.999L15.9995 39.999L5.99951 41.999L7.99953 31.999Z"
+              stroke="#000000"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M30.9995 8.99902L38.9995 16.999"
+              stroke="#000000"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M8.99951 31.999L15.9995 38.999"
+              stroke="#000000"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M12.9995 34.999L34.9995 12.999"
+              stroke="#000000"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </g>
+          <defs>
+            <clipPath id="icon-a6256952696ccc">
+              <rect width="48" height="48" fill="#000000" />
+            </clipPath>
+          </defs>
+        </svg>
+      </button>
+      <button id="mainClearAllBtn">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 48 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M20 5.91406H28V13.9141H43V21.9141H5V13.9141H20V5.91406Z"
+            stroke="#333"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8 40H40V22H8V40Z"
+            fill="none"
+            stroke="#333"
+            stroke-width="4"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M16 39.8976V33.9141"
+            stroke="#333"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M24 39.8977V33.8977"
+            stroke="#333"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M32 39.8976V33.9141"
+            stroke="#333"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M12 40H36"
+            stroke="#333"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button id="timerBtn">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+          <circle
+            cx="24"
+            cy="26"
+            r="16"
+            stroke="#333"
+            stroke-width="3"
+          />
+          <path
+            d="M18 6H30"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <path
+            d="M24 14V26L32 31"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M17 10L13 14"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <path
+            d="M31 10L35 14"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+      <button id="fullscreenBtn"></button>
+      <button id="customExeButton" style="display: none">
+        <svg
+          t="1774411595152"
+          class="icon"
+          viewBox="0 0 1024 1024"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg"
+          p-id="4764"
+          width="24"
+          height="24"
+        >
+          <path
+            d="M12.8 460.8C38.4 202.24 251.733333 0 512 0s473.6 202.24 499.2 460.8h-100.693333C885.76 258.56 716.8 102.4 512 102.4S138.24 258.56 113.493333 460.8H12.8z m599.893333 51.2v10.24c0 3.413333 0 6.826667-1.706666 10.24 0 3.413333-1.706667 6.826667-2.56 9.386667-0.853333 3.413333-1.706667 5.973333-3.413334 9.386666-0.853333 3.413333-2.56 5.973333-4.266666 9.386667-1.706667 2.56-3.413333 5.973333-5.12 8.533333a46.933333 46.933333 0 0 1-5.973334 7.68c-1.706667 2.56-4.266667 5.12-6.826666 7.68s-5.12 4.266667-7.68 6.826667-5.12 4.266667-7.68 5.973333c-2.56 1.706667-5.973333 3.413333-8.533334 5.12-2.56 1.706667-5.973333 3.413333-8.533333 4.266667-3.413333 1.706667-5.973333 2.56-9.386667 3.413333l-9.386666 2.56a30.72 30.72 0 0 0-9.386667 1.706667h-20.48c-3.413333 0-6.826667 0-9.386667-1.706667-3.413333 0-6.826667-1.706667-9.386666-2.56a41.557333 41.557333 0 0 1-9.386667-3.413333c-3.413333-1.706667-5.973333-2.56-8.533333-4.266667-2.56-1.706667-5.973333-3.413333-8.533334-5.12-2.56-1.706667-5.12-4.266667-7.68-5.973333s-5.12-4.266667-7.68-6.826667-4.266667-5.12-6.826666-7.68c-1.706667-2.56-4.266667-5.12-5.973334-7.68-1.706667-2.56-3.413333-5.973333-5.12-8.533333-1.706667-2.56-2.56-5.973333-4.266666-9.386667-0.853333-3.413333-2.56-5.973333-3.413334-9.386666-0.853333-3.413333-1.706667-6.826667-2.56-9.386667 0-3.413333-0.853333-6.826667-1.706666-10.24s0-6.826667 0-10.24v-10.24c0-3.413333 0-6.826667 1.706666-10.24 0-3.413333 1.706667-6.826667 2.56-9.386667 0.853333-3.413333 1.706667-6.826667 3.413334-9.386666s2.56-5.973333 4.266666-9.386667c1.706667-3.413333 3.413333-5.973333 5.12-8.533333a46.933333 46.933333 0 0 1 5.973334-7.68c1.706667-2.56 4.266667-5.12 6.826666-7.68s5.12-4.266667 7.68-6.826667A46.933333 46.933333 0 0 1 456.533333 426.666667c2.56-1.706667 5.973333-3.413333 8.533334-5.12 2.56-1.706667 5.973333-3.413333 8.533333-4.266667 3.413333-1.706667 5.973333-2.56 9.386667-3.413333l9.386666-2.56c3.413333 0 6.826667-0.853333 9.386667-1.706667h20.48c3.413333 0 6.826667 0 9.386667 1.706667 3.413333 0 6.826667 1.706667 9.386666 2.56 3.413333 0.853333 5.973333 1.706667 9.386667 3.413333 3.413333 1.706667 5.973333 2.56 8.533333 4.266667 2.56 1.706667 5.973333 3.413333 8.533334 5.12 2.56 1.706667 5.12 4.266667 7.68 5.973333 2.56 1.706667 5.12 4.266667 7.68 6.826667s4.266667 5.12 6.826666 7.68c1.706667 2.56 4.266667 5.12 5.973334 7.68 1.706667 2.56 3.413333 5.973333 5.12 8.533333 1.706667 2.56 2.56 5.973333 4.266666 9.386667s2.56 5.973333 3.413334 9.386666c0.853333 3.413333 1.706667 6.826667 2.56 9.386667 0 3.413333 0.853333 6.826667 1.706666 10.24V512z m-499.2 51.2H12.8C38.4 821.76 251.733333 1024 512 1024s473.6-202.24 499.2-460.8h-100.693333C885.76 765.44 716.8 921.6 512 921.6S138.24 765.44 113.493333 563.2z"
+            fill="#1296db"
+            p-id="4765"
+          ></path>
+        </svg>
+      </button>
+      <button id="alwaysOnTopBtn" style="display: none"></button>
+      <button id="refreshBtn">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+          <path
+            d="M36.7279 36.7279C33.4706 39.9853 28.9706 42 24 42C14.0589 42 6 33.9411 6 24C6 14.0589 14.0589 6 24 6C28.9706 6 33.4706 8.01472 36.7279 11.2721C38.3859 12.9301 42 17 42 17"
+            stroke="#000000"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M42 8V17H33"
+            stroke="#000000"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button id="exitBtn">
+        <svg width="24" height="24" viewBox="0 0 48 48" fill="none">
+          <path
+            d="M14.5 8C13.8406 8.37652 13.2062 8.79103 12.6 9.24051C11.5625 10.0097 10.6074 10.8814 9.75 11.8402C6.79377 15.1463 5 19.4891 5 24.2455C5 34.6033 13.5066 43 24 43C34.4934 43 43 34.6033 43 24.2455C43 19.4891 41.2062 15.1463 38.25 11.8402C37.3926 10.8814 36.4375 10.0097 35.4 9.24051C34.7938 8.79103 34.1594 8.37652 33.5 8"
+            stroke="#000000"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M24 4V24"
+            stroke="#333"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <div class="checkbox-container">
+        <input type="checkbox" id="toggleOrientation" />
+        <span class="checkmark"></span>
+      </div>
+    </div>
+    <!-- 工具栏 End -->
+    <div id="timerPanel" class="timer-panel" style="display: none">
+      <div class="timer-panel-row timer-panel-row--controls">
+        <button type="button" id="timerStartBtn" class="timer-panel-btn">
+          开始
+        </button>
+        <button type="button" id="timerResetBtn" class="timer-panel-btn">
+          重置
+        </button>
+        <button type="button" id="countdownModeBtn" class="timer-mode-btn">
+          倒计时
+        </button>
+      </div>
+      <div class="timer-panel-row timer-panel-row--time">
+        <div class="timer-time-field">
+          <input
+            type="text"
+            id="timerMinuteInput"
+            inputmode="numeric"
+            value="00"
+            readonly
+          />
+        </div>
+        <span class="timer-separator">:</span>
+        <div class="timer-time-field">
+          <input
+            type="text"
+            id="timerSecondInput"
+            inputmode="numeric"
+            value="00"
+            readonly
+          />
+        </div>
+      </div>
+    </div>
+    <div id="drawPanel" class="draw-panel draw-toolbar" style="display: none">
+      <button
+        type="button"
+        id="closeDrawPanelBtn"
+        class="draw-toolbar-btn"
+        aria-label="退出绘图"
+        title="退出绘图"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M15 18L9 12L15 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button
+        type="button"
+        id="drawToolPickerBtn"
+        class="draw-toolbar-btn"
+        aria-label="作图工具"
+        title="作图工具"
+      >
+        <span class="draw-toolbar-btn__icon" id="activeDrawToolIcon"></span>
+      </button>
+      <button
+        type="button"
+        id="drawToolbarEraserBtn"
+        class="draw-toolbar-btn"
+        aria-label="橡皮擦"
+        title="橡皮擦"
+      >
+        <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
+          <path
+            d="M4 42H44"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M31 4L7 28L13 34H21L41 14L31 4Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button
+        type="button"
+        id="clearAllBtn"
+        class="draw-toolbar-btn"
+        aria-label="清除所有"
+        title="清除所有"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 48 48"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M20 5.91406H28V13.9141H43V21.9141H5V13.9141H20V5.91406Z"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M8 40H40V22H8V40Z"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M16 39.8976V33.9141"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M24 39.8977V33.8977"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M32 39.8976V33.9141"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M12 40H36"
+            stroke="currentColor"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button
+        type="button"
+        id="undoBtn"
+        class="draw-toolbar-btn"
+        aria-label="撤消"
+        title="撤消"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M9 7H4V2"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M4 7c2.2-2.8 5.3-4 8.4-4 4.4 0 8.1 3.3 8.1 8 0 4.7-3.7 8-8.1 8H9"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button
+        type="button"
+        id="redoBtn"
+        class="draw-toolbar-btn"
+        aria-label="重做"
+        title="重做"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M15 7h5V2"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M20 7c-2.2-2.8-5.3-4-8.4-4-4.4 0-8.1 3.3-8.1 8 0 4.7 3.7 8 8.1 8H15"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+      <button
+        type="button"
+        id="drawMoreBtn"
+        class="draw-toolbar-btn draw-toolbar-more-btn"
+        aria-label="更多绘图设置"
+        title="更多绘图设置"
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <circle cx="5" cy="12" r="1.8" fill="currentColor" />
+          <circle cx="12" cy="12" r="1.8" fill="currentColor" />
+          <circle cx="19" cy="12" r="1.8" fill="currentColor" />
+        </svg>
+      </button>
+      <div class="draw-toolbar-group draw-toolbar-group--colors">
+        <div class="color-options">
+          <div class="color-btn color-btn--white" data-color="#FFFFFF"></div>
+          <div class="color-btn" data-color="#000000"></div>
+          <div class="color-btn active" data-color="#FF0000"></div>
+          <div class="color-btn" data-color="#00FF00"></div>
+          <div class="color-btn" data-color="#0000FF"></div>
+          <div class="color-btn" data-color="#FFA500"></div>
+          <div class="color-btn" data-color="#800080"></div>
+        </div>
+      </div>
+      <div id="drawToolbarSecondary" class="draw-toolbar-secondary">
+        <div class="draw-toolbar-group draw-toolbar-group--slider">
+          <span class="slider-label">线宽</span>
+          <input
+            type="range"
+            min="1"
+            max="25"
+            value="5"
+            class="slider"
+            id="penSize"
+          />
+          <span id="sizeValue">5</span>
+        </div>
+        <div class="draw-toolbar-group draw-toolbar-group--toggles">
+          <label class="inline-toggle" title="虚线">
+            <input type="checkbox" id="dashedMode" />
+            <span class="checkbox-custom"></span>
+            <span class="switch-label">虚线</span>
+          </label>
+          <label class="inline-toggle" title="智能笔">
+            <input type="checkbox" id="smartMode" />
+            <span class="checkbox-custom"></span>
+            <span class="switch-label">智能笔</span>
+          </label>
+          <label class="inline-toggle" title="消字笔">
+            <input type="checkbox" id="penMode" />
+            <span class="checkbox-custom"></span>
+            <span class="switch-label">消字笔</span>
+          </label>
+        </div>
+        <div
+          class="draw-toolbar-group draw-toolbar-group--board"
+          role="group"
+          aria-label="板书背景切换"
+        >
+          <button
+            type="button"
+            class="board-chip"
+            data-board-theme="white"
+            aria-label="白板"
+            title="白板"
+          >
+            <span
+              class="board-chip-icon board-chip-icon--white"
+              aria-hidden="true"
+            ></span>
+          </button>
+          <button
+            type="button"
+            class="board-chip"
+            data-board-theme="black"
+            aria-label="黑板"
+            title="黑板"
+          >
+            <span
+              class="board-chip-icon board-chip-icon--black"
+              aria-hidden="true"
+            ></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="drawToolPanel"
+      class="draw-panel draw-tool-panel"
+      style="display: none"
+    >
+      <div class="draw-panel-section">
+        <div class="tool-grid">
+          <button
+            type="button"
+            class="tool-chip"
+            data-tool="select"
+            aria-label="选择"
+            title="选择"
+          ></button>
+          <button
+            type="button"
+            class="tool-chip active"
+            data-tool="pen"
+            aria-label="自由笔"
+            title="自由笔"
+          ></button>
+          <button
+            type="button"
+            class="tool-chip"
+            data-tool="line"
+            aria-label="直线"
+            title="直线"
+          ></button>
+          <button
+            type="button"
+            class="tool-chip"
+            data-tool="rectangle"
+            aria-label="矩形"
+            title="矩形"
+          ></button>
+          <button
+            type="button"
+            class="tool-chip"
+            data-tool="ellipse"
+            aria-label="椭圆"
+            title="椭圆"
+          ></button>
+          <button
+            type="button"
+            class="tool-chip"
+            data-tool="polygon"
+            aria-label="多边形"
+            title="多边形"
+          ></button>
+          <button
+            type="button"
+            class="tool-chip"
+            data-tool="cuboid"
+            aria-label="长方体"
+            title="长方体"
+          ></button>
+          <button
+            type="button"
+            class="tool-chip"
+            data-tool="sphere"
+            aria-label="球"
+            title="球"
+          ></button>
+        </div>
+      </div>
+    </div>
+
+    <div id="eraserPanel" class="draw-panel" style="display: none">
+      <div class="slider-container">
+        <span class="slider-label">大小</span>
+        <input
+          type="range"
+          min="10"
+          max="60"
+          value="40"
+          class="slider"
+          id="eraserSize"
+        />
+        <span id="eraserSizeValue">40</span>
+      </div>
+      <div class="eraser-mode-switch">
+        <label class="checkbox-label">
+          <input type="checkbox" id="lassoEraser" />
+          <span class="checkbox-custom"></span>
+          <span class="switch-label">圈选擦除</span>
+        </label>
+      </div>
+    </div>
+
+    <script id="geobox-bootstrap" type="application/json">
+      {
+        "toolbarPosition": "right",
+        "isFullScreen": false,
+        "showTitleBar": true,
+        "fileType": "html",
+        "toolBarFold": false,
+        "isAutoSaveEnabled": false,
+        "floatBall": "small",
+        "foreverShowCircle": false,
+        "versionText": "GeoBox版本号：v3.10",
+        "currentPage": 0,
+        "params": {
+          "showToolBar": true,
+          "showAlgebraInput": false,
+          "showMenuBar": true,
+          "scaleContainerClass": "app",
+          "EnableRightClick": true,
+          "enableShiftDragZoom": true,
+          "enableLabelDrags": false,
+          "autoHeight": false,
+          "showZoomButtons": true,
+          "allowUpscale": true,
+          "borderColor": "#eee",
+          "enableFileFeatures": false
+        },
+        "pages": [{"title":"2-8-8-引力的功-尤景汉","type":"ggb","contentBase64":"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"}]
+      }
+    </script>
+
+  </body>
+</html>
